@@ -15,13 +15,14 @@ import { MenuItem, FormControl, Select, Card, CardContent,} from '@material-ui/c
 
 function App() {
 
-  const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState('worldwide');
+  const [country, setInputCountry] = useState("worldwide");
   const [countryInfo, setCountryInfo] = useState({});
-  const [tableData, setTableData]  =  useState([]);
-  const [mapCenter, setMapCenter] = useState({lat: 39.237292, lng: 7.852885});
-  const [mapZoom, setMapZoom] = useState(2);
+  const [countries, setCountries] = useState([]);
   const [mapCountries, setMapCountries] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [casesType, setCasesType] = useState("cases");
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(3);
 
   useEffect(() => {
     fetch(`https://disease.sh/v3/covid-19/all`)
@@ -43,9 +44,9 @@ function App() {
           }));
           
           const sortedData = sortData(data)
+          setCountries(countries);
           setTableData(sortedData);
           setMapCountries(data);
-          setCountries(countries);
         });
     };
     getCountryData();
@@ -53,7 +54,6 @@ function App() {
 
   const onCountryChange = async (event) => {
     const countryCode = event.target.value;
-    setCountry(countryCode);
 
     const url = countryCode === 'worldwide' 
     ? `https://disease.sh/v3/covid-19/all` 
@@ -62,11 +62,10 @@ function App() {
     await fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setCountry(countryCode);
+        setInputCountry(countryCode);
         setCountryInfo(data);
-
-        setMapCenter([data.countryInfo.lat, data.countryInfo.long])
-        setMapZoom(4)
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
       })    
   }
   
@@ -90,10 +89,21 @@ function App() {
         </div>
 
         <div className="app__stats">
-          {console.log(countryInfo)}
-          <InfoBox  title='Coronavirus Cases Today' cases={countryInfo.todayCases}  total={countryInfo.cases}  />
-          <InfoBox  title='Recovered' cases={countryInfo.todayRecovered}  total={countryInfo.recovered}  />
-          <InfoBox  title='Deaths' cases={countryInfo.todayDeaths}  total={countryInfo.deaths}  />
+          <InfoBox  
+            title='Coronavirus Cases Today' 
+            cases={countryInfo.todayCases}  
+            total={countryInfo.cases}  
+          />
+          <InfoBox  
+            title='Recovered' 
+            cases={countryInfo.todayRecovered}  
+            total={countryInfo.recovered}  
+          />
+          <InfoBox  
+            title='Deaths' 
+            cases={countryInfo.todayDeaths}  
+            total={countryInfo.deaths}  
+          />
         </div>
 
         <Map
