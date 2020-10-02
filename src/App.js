@@ -76,6 +76,7 @@ function App() {
           <h1>COVID-19 TRACKER</h1>
           <FormControl className='app__dropdown'>
             <Select
+              className="app__select"
               varient='outlined'
               value={country}
               onChange={onCountryChange} 
@@ -126,8 +127,8 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
             <Table countries={tableData}/>
-          <h3>Worldwide New {casesType}</h3>
-            <LineGraph casesType={casesType}/>
+          <h3 className="app__graphTitle">Worldwide New {casesType}</h3>
+            <LineGraph className="app__graph" casesType={casesType}/>
         </CardContent>
       </Card>
 
