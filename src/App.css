@@ -17,7 +17,12 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-  background-color: lightgrey;
+  padding: 10px;
+  border-bottom: 2px solid lightgrey;
+}
+.app__header > h1 {
+  color: #fc3c3c;
+  font-size: 2rem;
 }
 
 .app__left  {

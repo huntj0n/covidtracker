@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { sortData } from './util';
+import { sortData, prettyPrintStat } from './util';
 
 //components
 import InfoBox from './components/InfoBoxes/InfoBox';
@@ -89,24 +89,33 @@ function App() {
         </div>
 
         <div className="app__stats">
-          <InfoBox  
+          <InfoBox 
+            isRed
+            onClick={e => setCasesType('cases')} 
             title='Coronavirus Cases Today' 
-            cases={countryInfo.todayCases}  
+            cases={prettyPrintStat(countryInfo.todayCases)}
             total={countryInfo.cases}  
+            active={casesType === "cases"}
           />
-          <InfoBox  
-            title='Recovered' 
-            cases={countryInfo.todayRecovered}  
+          <InfoBox 
+            onClick={(e) => setCasesType('recovered')} 
+            title='Recovered Today' 
+            cases={prettyPrintStat(countryInfo.todayRecovered)}  
             total={countryInfo.recovered}  
+            active={casesType === "recovered"}
           />
-          <InfoBox  
-            title='Deaths' 
-            cases={countryInfo.todayDeaths}  
+          <InfoBox 
+            isRed
+            onClick={e => setCasesType('deaths')} 
+            title='Deaths Today' 
+            cases={prettyPrintStat(countryInfo.todayDeaths)}  
             total={countryInfo.deaths}  
+            active={casesType === "deaths"}
           />
         </div>
 
         <Map
+          casesType={casesType}
           countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
@@ -117,8 +126,8 @@ function App() {
         <CardContent>
           <h3>Live Cases by Country</h3>
             <Table countries={tableData}/>
-          <h3>Worldwide New Cases</h3>
-            <LineGraph />
+          <h3>Worldwide New {casesType}</h3>
+            <LineGraph casesType={casesType}/>
         </CardContent>
       </Card>
 
